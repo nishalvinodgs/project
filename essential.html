@@ -1,0 +1,65 @@
+.nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+.logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0px;
+        }
+
+        .logo-img {
+            height: 80px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 25px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff, 0 0 10px #fff; }
+            to { text-shadow: 0 0 10px #fff, 0 0 20px #fff; }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #ccc;
+            transform: translateY(-2px);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #fff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }

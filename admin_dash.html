@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - thriftIN</title>
+    <style>
+        /* General Styles from 2nd_street_india.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styles from 2nd_street_india.html */
+        .header {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            position: sticky; /* Make header sticky */
+            top: 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0px;
+        }
+
+        .logo-img {
+            height: 80px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 25px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff, 0 0 10px #fff; }
+            to { text-shadow: 0 0 10px #fff, 0 0 20px #fff; }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #ccc;
+            transform: translateY(-2px);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #fff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Custom Scrollbar from 2nd_street_india.html */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fff;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        /* Admin Dashboard Specific Styles */
+        .admin-main {
+            display: flex;
+            flex: 1; /* Allows main content to take available space */
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #1a1a1a;
+            padding: 20px;
+            border-right: 1px solid #333;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+        }
+
+        .sidebar h3 {
+            color: #ff6b35;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            display: block;
+            padding: 12px 15px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover,
+        .sidebar ul li a.active {
+            background: #ff6b35;
+            color: #000;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            background: #0a0a0a;
+        }
+
+        .content-area h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #fff;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #111;
+            color: #fff;
+        }
+
+        .search-bar button {
+            padding: 10px 15px;
+            background: #ff6b35;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background: #e05a2a;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid #333;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: #222;
+            color: #ff6b35;
+            font-weight: bold;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #111;
+        }
+
+        .data-table tr:hover {
+            background: #1a1a1a;
+        }
+
+        .action-buttons button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .action-buttons button.delete {
+            background: #dc3545;
+        }
+
+        .action-buttons button:hover {
+            opacity: 0.9;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .admin-main {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #333;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            }
+            .sidebar ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            .sidebar ul li {
+                margin-bottom: 0;
+            }
+            .content-area {
+                padding: 20px;
+            }
+            .data-table th, .data-table td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+            .action-buttons button {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo-container">
+                <img src="logo1.png" alt="Logo" class="logo-img">
+                <a href="2nd_street_india.html" class="logo-text">thriftIN</a>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Admin Panel</a></li>
+                    <li><a href="login_page.html">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="admin-main">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <h3>Admin Navigation</h3>
+            <ul>
+                <li><a href="#" id="nav-users" class="active">Manage Customers</a></li>
+                <li><a href="#" id="nav-sellers">Manage Sellers</a></li>
+                <li><a href="#" id="nav-products">Manage Products</a></li>
+                <!-- Add more admin specific links here if needed -->
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content-area" id="admin-content">
+            <!-- Content will be loaded here dynamically -->
+            <h2>Manage Customers</h2>
+            <div class="search-bar">
+                <input type="text" id="user-search" placeholder="Search users...">
+                <button onclick="searchData('users')">Search</button>
+            </div>
+            <table class="data-table" id="user-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- User data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script>
+        // Dummy Data (In a real application, this would come from a backend API)
+       /* const users = [
+            { id: 1, name: 'Alice Johnson', email: 'alice@example.com', status: 'Active' },
+            { id: 2, name: 'Bob Williams', email: 'bob@example.com', status: 'Inactive' },
+            { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', status: 'Active' },
+            { id: 4, name: 'Diana Prince', email: 'diana@example.com', status: 'Active' },
+            { id: 5, name: 'Eve Adams', email: 'eve@example.com', status: 'Inactive' }
+        ];
+
+        const sellers = [
+            { id: 101, name: 'Fashion Hub', email: 'fashionhub@example.com', status: 'Approved', products: 15 },
+            { id: 102, name: 'Vintage Finds', email: 'vintage@example.com', status: 'Pending', products: 5 },
+            { id: 103, name: 'Luxury Resale', email: 'luxury@example.com', status: 'Approved', products: 30 },
+            { id: 104, name: 'Street Style Co.', email: 'streetstyle@example.com', status: 'Approved', products: 10 }
+        ];
+*/
+            let users = [];
+            let sellers = [];
+
+            async function fetchUsers() {
+                const res = await fetch('get_users.php');
+                users = await res.json();
+                renderTable(users, 'users');
+            }
+
+            async function fetchSellers() {
+                const res = await fetch('get_sellers.php');
+                sellers = await res.json();
+                renderTable(sellers, 'sellers');
+            }
+
+        const products = [
+            { id: 1001, name: 'Designer Silk Scarf', seller: 'Luxury Resale', category: 'Accessories', price: '₹8,500', status: 'Available' },
+            { id: 1002, name: 'Men\'s Leather Jacket', seller: 'Fashion Hub', category: 'Men\'s Fashion', price: '₹12,000', status: 'Sold' },
+            { id: 1003, name: 'Vintage Handbag', seller: 'Vintage Finds', category: 'Luxury Bags', price: '₹5,200', status: 'Available' },
+            { id: 1004, name: 'Women\'s Evening Gown', seller: 'Luxury Resale', category: 'Women\'s Fashion', price: '₹18,000', status: 'Available' },
+            { id: 1005, name: 'Smartwatch Series 5', seller: 'Fashion Hub', category: 'Electronics', price: '₹7,000', status: 'Available' }
+        ];
+
+        const adminContent = document.getElementById('admin-content');
+        const navLinks = document.querySelectorAll('.sidebar ul li a');
+
+        // Function to render data into a table
+        function renderTable(data, type, searchTerm = '') {
+            let tableHtml = `
+                <div class="search-bar">
+                    <input type="text" id="${type}-search" placeholder="Search ${type}..." value="${searchTerm}">
+                    <button onclick="searchData('${type}')">Search</button>
+                </div>
+                <table class="data-table" id="${type}-table">
+                    <thead>
+                        <tr>`;
+
+            // Define headers based on type
+            if (type === 'users') {
+                tableHtml += `<th>ID</th><th>Name</th><th>Email</th><th>Status</th><th>Actions</th>`;
+            } else if (type === 'sellers') {
+                tableHtml += `<th>ID</th><th>Name</th><th>Email</th><th>Status</th><th>Products</th><th>Actions</th>`;
+            } else if (type === 'products') {
+                tableHtml += `<th>ID</th><th>Name</th><th>Seller</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th>`;
+            }
+
+            tableHtml += `
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            // Filter data based on search term
+            const filteredData = data.filter(item =>
+                Object.values(item).some(value =>
+                    String(value).toLowerCase().includes(searchTerm.toLowerCase())
+                )
+            );
+
+            filteredData.forEach(item => {
+                tableHtml += `<tr>`;
+                if (type === 'users') {
+                    tableHtml += `
+                        <td>${item.id}</td>
+                        <td>${item.name}</td>
+                        <td>${item.email}</td>
+                        <td>${item.status}</td>
+                        <td class="action-buttons">
+                            <button onclick="editItem('${type}', ${item.id})">Edit</button>
+                            <button class="delete" onclick="deleteItem('${type}', ${item.id})">Delete</button>
+                        </td>`;
+                } else if (type === 'sellers') {
+                    tableHtml += `
+                        <td>${item.id}</td>
+                        <td>${item.name}</td>
+                        <td>${item.email}</td>
+                        <td>${item.status}</td>
+                        <td>${item.products}</td>
+                        <td class="action-buttons">
+                            <button onclick="editItem('${type}', ${item.id})">Edit</button>
+                            <button class="delete" onclick="deleteItem('${type}', ${item.id})">Delete</button>
+                        </td>`;
+                } else if (type === 'products') {
+                    tableHtml += `
+                        <td>${item.id}</td>
+                        <td>${item.name}</td>
+                        <td>${item.seller}</td>
+                        <td>${item.category}</td>
+                        <td>${item.price}</td>
+                        <td>${item.status}</td>
+                        <td class="action-buttons">
+                            <button onclick="editItem('${type}', ${item.id})">Edit</button>
+                            <button class="delete" onclick="deleteItem('${type}', ${item.id})">Delete</button>
+                        </td>`;
+                }
+                tableHtml += `</tr>`;
+            });
+
+            tableHtml += `
+                    </tbody>
+                </table>`;
+
+            adminContent.innerHTML = `<h2>Manage ${type.charAt(0).toUpperCase() + type.slice(1)}</h2>` + tableHtml;
+        }
+
+        // Initial load
+       /* document.addEventListener('DOMContentLoaded', () => {
+            renderTable(users, 'users');
+        });*/
+        document.addEventListener('DOMContentLoaded', () => {
+    fetchUsers();
+});
+
+
+        // Navigation click handler
+      /*  navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                navLinks.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+
+                const id = this.id;
+                if (id === 'nav-users') {
+                    renderTable(users, 'users');
+                } else if (id === 'nav-sellers') {
+                    renderTable(sellers, 'sellers');
+                } else if (id === 'nav-products') {
+                    renderTable(products, 'products');
+                }
+            });
+        });
+*/
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                navLinks.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+
+                const id = this.id;
+                if (id === 'nav-users') {
+                    fetchUsers();
+                } else if (id === 'nav-sellers') {
+                    fetchSellers();
+                } else if (id === 'nav-products') {
+                    renderTable(products, 'products');
+                }
+            });
+        });
+
+        // Placeholder functions for actions
+        function editItem(type, id) {
+        if (type === 'sellers') {
+            const seller = sellers.find(s => s.id == id);
+            const newName = prompt("Enter new name:", seller.name);
+            const newEmail = prompt("Enter new email:", seller.email);
+            if (newName && newEmail) {
+                fetch('edit_seller.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `id=${id}&name=${encodeURIComponent(newName)}&email=${encodeURIComponent(newEmail)}`
+                }).then(r => r.json()).then(res => {
+                    if (res.success) fetchSellers();
+                });
+            }
+        }
+    }
+
+        function deleteItem(type, id) {
+            if (type === 'sellers' && confirm(`Delete seller ID ${id}?`)) {
+                fetch('delete_seller.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `id=${id}`
+                }).then(r => r.json()).then(res => {
+                    if (res.success) fetchSellers();
+                });
+            }
+        }
+
+
+        function searchData(type) {
+            const searchTerm = document.getElementById(`${type}-search`).value;
+            if (type === 'users') {
+                renderTable(users, 'users', searchTerm);
+            } else if (type === 'sellers') {
+                renderTable(sellers, 'sellers', searchTerm);
+            } else if (type === 'products') {
+                renderTable(products, 'products', searchTerm);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - thriftIN</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles (matching main page) */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0px;
+        }
+
+        .logo-img {
+            height: 80px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 25px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff, 0 0 10px #fff; }
+            to { text-shadow: 0 0 10px #fff, 0 0 20px #fff; }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #ccc;
+            transform: translateY(-2px);
+        }
+
+        .nav-menu a.active {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .nav-menu a.active::after,
+        .nav-menu a:hover::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #fff;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #fff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .about-main {
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        /* Hero Section */
+        .about-hero {
+            height: 60vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+        .about-hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.3;
+        }
+
+        .about-hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,0,0,0.8), rgba(255,255,255,0.1));
+            z-index: -1;
+        }
+
+        .about-hero-content {
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .about-hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* About Content Sections */
+        .about-section {
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .about-section:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(45deg, #fff, #ccc);
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            text-align: center;
+            padding: 100px 20px;
+            background: rgba(17, 17, 17, 0.8);
+        }
+
+        .mission-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .mission-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .mission-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.2);
+            border-color: #fff;
+        }
+
+        .mission-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .mission-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .member-image {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .team-member:hover .member-image img {
+            transform: scale(1.1);
+        }
+
+        .member-info {
+            padding: 25px;
+        }
+
+        .member-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .member-info p {
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: #fff;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #ccc;
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-hero p {
+                font-size: 1rem;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .container {
+                flex-direction: column;
+            }
+            
+            .about-section:nth-child(even) .container {
+                flex-direction: column-reverse;
+            }
+            
+            .about-image, .about-text {
+                width: 100%;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Footer (same as other pages) */
+        .footer {
+            background: #111;
+            padding: 50px 0;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            color: #ff6b35;
+            margin-bottom: 15px;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #ff6b35;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fff;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with consistent navigation structure -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo-container">
+                <img src="logo1.png" alt="thriftIN Logo" class="logo-img">
+                <a href="2nd_street_india.html" class="logo-text">thriftIN</a>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="2nd_street_india.html">Home</a></li>
+                    <li><a href="products_page.html">Products</a></li>
+                    <li><a href="about_page.html" class="active">About</a></li>
+                    <li><a href="contact_page.html">Contact</a></li>
+                    <li><a href="login_page.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="about-main">
+        <!-- Hero Section -->
+        <section class="about-hero">
+            <!-- Background image placeholder -->
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fashion background" class="about-hero-bg">
+            <div class="about-hero-overlay"></div>
+            <div class="about-hero-content">
+                <h1>Our Story</h1>
+                <p>Discover the journey behind thriftIN and our passion for sustainable fashion</p>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section">
+            <div class="container">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1526947425960-945c6e72858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our beginnings">
+                </div>
+                <div class="about-text">
+                    <h2 class="section-title">Our Beginnings</h2>
+                    <p>Founded in 2020, thriftIN began as a small boutique in Mumbai with a simple mission: to make premium fashion accessible while promoting sustainability.</p>
+                    <p>Our founders, fashion enthusiasts with a vision, recognized the growing need for a platform where high-quality pre-owned items could find new homes, reducing waste in the fashion industry.</p>
+                    <p>What started as a passion project quickly grew into India's leading marketplace for premium pre-owned fashion, with thousands of satisfied customers across the country.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Philosophy Section -->
+        <section class="about-section">
+            <div class="container">
+                <div class="about-text">
+                    <h2 class="section-title">Our Philosophy</h2>
+                    <p>At thriftIN, we believe that fashion should be both luxurious and responsible. We're committed to changing the way people think about pre-owned items.</p>
+                    <p>Every piece in our collection undergoes a rigorous authentication process to ensure quality and authenticity. We're proud to offer items that are not only beautiful but also have a story to tell.</p>
+                    <p>By choosing pre-owned, our customers become part of a movement that values craftsmanship, reduces environmental impact, and makes luxury accessible.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our philosophy">
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="mission-section">
+            <div class="container">
+                <h2 class="section-title">Our Mission & Values</h2>
+                <div class="mission-cards">
+                    <div class="mission-card">
+                        <div class="mission-icon">♻️</div>
+                        <h3>Sustainability</h3>
+                        <p>We're dedicated to reducing fashion waste by extending the lifecycle of premium items through our circular economy model.</p>
+                    </div>
+                    <div class="mission-card">
+                        <div class="mission-icon">💎</div>
+                        <h3>Authenticity</h3>
+                        <p>Every item is carefully inspected by our team of experts to guarantee its quality and authenticity before listing.</p>
+                    </div>
+                    <div class="mission-card">
+                        <div class="mission-icon">❤️</div>
+                        <h3>Customer Love</h3>
+                        <p>We prioritize exceptional service, ensuring every customer finds exactly what they're looking for with complete confidence.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <div class="container">
+                <h2 class="section-title">Meet Our Team</h2>
+                <p>The passionate individuals behind thriftIN's success</p>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Founder & CEO">
+                        </div>
+                        <div class="member-info">
+                            <h3>Rajiv Malhotra</h3>
+                            <p>Founder & CEO</p>
+                            <div class="social-links">
+                                <a href="#"><span>📱</span></a>
+                                <a href="#"><span>💼</span></a>
+                                <a href="#"><span>📧</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Head of Operations">
+                        </div>
+                        <div class="member-info">
+                            <h3>Priya Sharma</h3>
+                            <p>Head of Operations</p>
+                            <div class="social-links">
+                                <a href="#"><span>📱</span></a>
+                                <a href="#"><span>💼</span></a>
+                                <a href="#"><span>📧</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Creative Director">
+                        </div>
+                        <div class="member-info">
+                            <h3>Arjun Patel</h3>
+                            <p>Creative Director</p>
+                            <div class="social-links">
+                                <a href="#"><span>📱</span></a>
+                                <a href="#"><span>💼</span></a>
+                                <a href="#"><span>📧</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Head of Authentication">
+                        </div>
+                        <div class="member-info">
+                            <h3>Neha Gupta</h3>
+                            <p>Head of Authentication</p>
+                            <div class="social-links">
+                                <a href="#"><span>📱</span></a>
+                                <a href="#"><span>💼</span></a>
+                                <a href="#"><span>📧</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            
+            <p style="text-align: center;">&copy; 2025 thriftIN. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(0, 0, 0, 0.95)';
+            } else {
+                header.style.background = 'rgba(0, 0, 0, 0.9)';
+            }
+        });
+
+        // Animation for mission cards
+        const missionCards = document.querySelectorAll('.mission-card');
+        missionCards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.about-image, .about-text, .mission-card, .team-member').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(50px)';
+            element.style.transition = 'all 0.6s ease';
+            observer.observe(element);
+        });
+
+        // Team member hover effect
+        document.querySelectorAll('.team-member').forEach(member => {
+            member.addEventListener('mouseenter', function() {
+                this.querySelector('.member-image img').style.transform = 'scale(1.1)';
+            });
+            
+            member.addEventListener('mouseleave', function() {
+                this.querySelector('.member-image img').style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
