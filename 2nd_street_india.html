@@ -1,4 +1,15 @@
-<!DOCTYPE html>
+<?php
+include 'db_connect.php';
+
+// Example: check if connection works
+$sql = "SELECT NOW() AS current_time";
+$result = $conn->query($sql);
+
+if ($result) {
+    $row = $result->fetch_assoc();
+    echo "Database connected. Current time: " . $row['current_time'];
+}
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
